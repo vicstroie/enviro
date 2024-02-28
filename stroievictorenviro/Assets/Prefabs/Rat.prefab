@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 9080106260305017368}
   - component: {fileID: -4798126955559706653}
   - component: {fileID: -368311870676957854}
+  - component: {fileID: -7850062498220948054}
   m_Layer: 0
   m_Name: Rat
   m_TagString: Untagged
@@ -45,8 +46,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f5cba9fff73d1d429a117617da265f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xSpeed: 0.01
+  facing: 1
+  rotFacing: 1
+  xSpeed: 0.02
   xBuffer: 18.5
+  maxUpRot: {x: 0, y: 0, z: 20}
+  maxDownRot: {x: 0, y: 0, z: 20}
 --- !u!212 &-368311870676957854
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -99,3 +104,38 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!58 &-7850062498220948054
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6135909585653555410}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 4.5

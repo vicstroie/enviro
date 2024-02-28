@@ -46,7 +46,7 @@ public class Manager : MonoBehaviour
 
         }
 
-        if (pizzaNum < 5)
+        if (pizzaNum < 1)
         {
             if(pizzaTimer > 720)
             {
@@ -60,9 +60,9 @@ public class Manager : MonoBehaviour
     //Is the return type necessary?
     private GameObject SpawnRat()
     {
-
-        /*
         int randSign = Random.Range(0, 2);
+        /*
+        
         int sign = (randSign == 1) ? 1 : -1; // 1 -> 1, 0 -> -1
         */
         float randY = Random.Range(-9.5f, -4f);
@@ -72,13 +72,13 @@ public class Manager : MonoBehaviour
         GameObject rat = GameObject.Instantiate(ratPrefab, ratPos, Quaternion.identity);
 
 
-        
-            
 
+
+        Debug.Log(randSign);
         /*
         Debug.Log(sign);
         Debug.Log(randY);
-        Debug.Log(randSign);
+        
         */
 
 

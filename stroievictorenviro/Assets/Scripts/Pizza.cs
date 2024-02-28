@@ -11,6 +11,7 @@ public class Pizza : MonoBehaviour
     //variables
     private float randomY;
     private bool dropped;
+    public bool chosen;
 
     //sprite stuff
     private SpriteRenderer sr;
@@ -35,6 +36,7 @@ public class Pizza : MonoBehaviour
         randomY = Random.Range(-9.5f, -4);
         sr = this.GetComponent<SpriteRenderer>();
         dropped = true;
+        chosen = false;
     }
 
     
