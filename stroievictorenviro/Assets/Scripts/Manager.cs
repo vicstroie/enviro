@@ -35,7 +35,7 @@ public class Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(ratNum < 5)
+        if(ratNum < 4)
         {
             if (ratTimer > 240)
             {
@@ -46,7 +46,7 @@ public class Manager : MonoBehaviour
 
         }
 
-        if (pizzaNum < 1)
+        if (pizzaNum < 5)
         {
             if(pizzaTimer > 720)
             {

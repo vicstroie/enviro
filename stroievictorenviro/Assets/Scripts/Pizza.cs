@@ -106,4 +106,17 @@ public class Pizza : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "rat" && collision.gameObject.GetComponent<Rat>().currentState == Rat.AIState.Sniff )
+        {
+            collision.gameObject.GetComponent<Rat>().FoundFood(this.gameObject);
+            chosen = true;
+            Debug.Log("sniffed!");
+
+        }
+        Debug.Log("triggered!");
+    }
+
+
 }

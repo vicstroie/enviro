@@ -32,7 +32,7 @@ public class Rat : MonoBehaviour
 
 
 
-    private AIState currentState;
+    public AIState currentState;
     public enum AIState
     {
         Wander,
@@ -102,6 +102,7 @@ public class Rat : MonoBehaviour
                 break;
             case AIState.Eat:
 
+                currentState = AIState.Eat;
                 break;
         }
     }
@@ -248,18 +249,21 @@ public class Rat : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void FoundFood(GameObject targetPizza)
     {
-        if(currentState == AIState.Sniff)
-        {
-            if(!collision.gameObject.GetComponent<Pizza>().chosen)
-            {
-                pizza = collision.gameObject;
+        //if (currentState == AIState.Sniff) { 
+            //if (!targetPizza.gameObject.GetComponent<Pizza>().chosen)
+            
+                pizza = targetPizza.gameObject;
                 eating = true;
                 pizza.GetComponent<Pizza>().chosen = true;
-            }
-            
-        }
+
+        //}
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        
     }
 
 }
