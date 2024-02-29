@@ -55,6 +55,17 @@ public class Manager : MonoBehaviour
             }
             pizzaTimer++;
         }
+
+        if (pigeonNum < 3)
+        {
+            if (pigeonTimer > 240)
+            {
+                SpawnPigeon();
+                pigeonTimer = 0;
+            }
+            pigeonTimer++;
+
+        }
     }
 
     //Is the return type necessary?
@@ -95,8 +106,9 @@ public class Manager : MonoBehaviour
     }
 
     private void SpawnPigeon() {
-        Vector3 pizzaPos = transform.position;
-        GameObject.Instantiate(pizzaPrefab, pizzaPos, Quaternion.identity);
+        float randX = Random.Range(-17, 17);
+        Vector3 pigeonPos = new Vector3(randX, transform.position.y + 7, transform.position.z);
+        GameObject.Instantiate(pigeonPrefab, pigeonPos, Quaternion.identity);
         pigeonNum++;
     }    
 }

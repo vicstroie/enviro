@@ -62,12 +62,15 @@ public class Pizza : MonoBehaviour
         switch (newState)
         {
             case AIState.Wait:
+                currentState = AIState.Wait;
 
                 break;
             case AIState.Eaten:
+                currentState = AIState.Eaten;
 
                 break;
             case AIState.Mold:
+                currentState = AIState.Mold;
                 sr.sprite = moldy;
                 break;
         }
