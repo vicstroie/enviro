@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   facing: 1
   rotFacing: 1
-  xSpeed: 0.02
+  xSpeed: 0.015
   xBuffer: 18.5
   maxUpRot: {x: 0, y: 0, z: 20}
   maxDownRot: {x: 0, y: 0, z: 20}

@@ -20,7 +20,7 @@ public class Manager : MonoBehaviour
     public int pizzaTimer;
     public int pigeonTimer;
 
-    private static Manager reference;
+    public static Manager reference;
     // Start is called before the first frame update
     void Start()
     {
@@ -85,7 +85,7 @@ public class Manager : MonoBehaviour
 
 
 
-        Debug.Log(randSign);
+        //Debug.Log(randSign);
         /*
         Debug.Log(sign);
         Debug.Log(randY);

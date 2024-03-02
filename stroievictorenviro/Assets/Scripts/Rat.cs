@@ -252,9 +252,9 @@ public class Rat : MonoBehaviour
     public void FoundFood(GameObject targetPizza)
     {
         //if (currentState == AIState.Sniff) { 
-            //if (!targetPizza.gameObject.GetComponent<Pizza>().chosen)
-            
-                pizza = targetPizza.gameObject;
+        //if (!targetPizza.gameObject.GetComponent<Pizza>().chosen)
+
+                pizza = targetPizza;
                 eating = true;
                 pizza.GetComponent<Pizza>().chosen = true;
 

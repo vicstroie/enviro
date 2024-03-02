@@ -10,21 +10,26 @@ public class Pizza : MonoBehaviour
 {
     //variables
     private float randomY;
+    private int sign;
     private bool dropped;
     public bool chosen;
+    public float speed;
 
     //sprite stuff
     private SpriteRenderer sr;
     public Sprite moldy;
+    private bool molded;
+    private int timer;
 
 
 
 
 
 
-    private AIState currentState = AIState.Wait;
+    private AIState currentState = AIState.Dropped;
     public enum AIState
     {
+       Dropped, 
         Wait,
         Eaten,
         Mold
@@ -33,25 +38,18 @@ public class Pizza : MonoBehaviour
     
     void Start()
     {
-        randomY = Random.Range(-9.5f, -4);
+        
         sr = this.GetComponent<SpriteRenderer>();
-        dropped = true;
+        StartState(AIState.Dropped);
         chosen = false;
+        molded = false;
+        timer = 0;
     }
 
     
     void Update()
     {
         UpdateState();
-        if(dropped)
-        {
-            transform.position += new Vector3(0, -0.1f, 0);
-
-            if(transform.position.y <= randomY)
-            {
-                dropped = false;
-            }
-        }
     }
 
     
@@ -61,6 +59,10 @@ public class Pizza : MonoBehaviour
 
         switch (newState)
         {
+            case AIState.Dropped:
+                randomY = Random.Range(-9.5f, -4);
+                currentState = AIState.Dropped;
+                break;
             case AIState.Wait:
                 currentState = AIState.Wait;
 
@@ -70,8 +72,15 @@ public class Pizza : MonoBehaviour
 
                 break;
             case AIState.Mold:
-                currentState = AIState.Mold;
+                randomY = Random.Range(-9.5f, -4);
+                int rand = Random.Range(0, 2);
+                if (rand == 0) { sign = 1; } else if (rand == 1) {  sign = -1; }
                 sr.sprite = moldy;
+                sr.flipX = true;
+                transform.localScale = Vector3.one * 0.8f;
+                Debug.Log("moldy!");
+                currentState = AIState.Mold;
+                
                 break;
         }
     }
@@ -80,15 +89,30 @@ public class Pizza : MonoBehaviour
     {
         switch (currentState)
         {
+            case AIState.Dropped:
+                transform.position += new Vector3(0, -0.1f, 0);
+
+                if (transform.position.y <= randomY)
+                {
+                    StartState(AIState.Wait);
+                }
+                break;
             case AIState.Wait:
                
+                if(molded) StartState(AIState.Mold);
 
                 break;
             case AIState.Eaten:
 
                 break;
             case AIState.Mold:
-
+                transform.position += new Vector3(randomY, speed * sign, 0) * Time.deltaTime;
+                if(transform.position.x > 20 || transform.position.x < -20)
+                {
+                    Manager.reference.GetComponent<Manager>().pizzaNum--;
+                    Destroy(this.gameObject);
+                    
+                }
                 break;
         }
     }
@@ -98,7 +122,7 @@ public class Pizza : MonoBehaviour
         switch (oldState)
         {
             case AIState.Wait:
-
+                randomY = 0;
                 break;
             case AIState.Eaten:
 
@@ -121,5 +145,18 @@ public class Pizza : MonoBehaviour
         Debug.Log("triggered!");
     }
 
+
+    private void FixedUpdate()
+    {
+        if(currentState == AIState.Wait)
+        {
+            timer++;
+            if (timer > 240)
+            {
+                molded = true;
+            }
+        }
+        
+    }
 
 }
