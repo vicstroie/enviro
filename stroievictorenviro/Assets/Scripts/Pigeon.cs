@@ -22,6 +22,10 @@ public class Pigeon : MonoBehaviour
     public Sprite sitting;
     public Sprite flying;
     public Sprite eat;
+
+    AudioSource aS;
+
+
     int timer = 0;
     bool leave = false;
 
@@ -47,6 +51,7 @@ public class Pigeon : MonoBehaviour
         facing = 1;
         xBuffer = 18.5f;
         sr = gameObject.GetComponent<SpriteRenderer>();
+        aS = gameObject.GetComponent<AudioSource>();
         StartState(AIState.Fly);
     }
 
@@ -195,14 +200,16 @@ public class Pigeon : MonoBehaviour
                     } else
                     {
                         int rand = Random.Range(0, 5);
-                        Debug.Log(rand);
+                        
                         if (rand == 3)
                         {
+                            aS.Play();
                             StartState(AIState.Land);
                         }
                         else
                         {
                             StartState(AIState.Fly);
+                            
                         }
                     }
 
@@ -221,11 +228,11 @@ public class Pigeon : MonoBehaviour
 
                     case 1:
                         sr.flipX = false;
-                        //randX = -16;
+                       
                         break;
                     case -1:
                         sr.flipX = true;
-                        //randX = 16;
+                        
                         break;
                 }
 

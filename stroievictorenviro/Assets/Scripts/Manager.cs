@@ -76,25 +76,12 @@ public class Manager : MonoBehaviour
     private GameObject SpawnRat()
     {
         int randSign = Random.Range(0, 2);
-        /*
         
-        int sign = (randSign == 1) ? 1 : -1; // 1 -> 1, 0 -> -1
-        */
         float randY = Random.Range(-9.5f, -4f);
         int sign = -1;
 
         Vector3 ratPos = new Vector3 (17 * sign, randY, transform.position.z);
         GameObject rat = GameObject.Instantiate(ratPrefab, ratPos, Quaternion.identity);
-
-
-
-
-        //Debug.Log(randSign);
-        /*
-        Debug.Log(sign);
-        Debug.Log(randY);
-        
-        */
 
 
         ratNum++;

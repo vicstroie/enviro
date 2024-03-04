@@ -19,12 +19,14 @@ public class Pizza : MonoBehaviour
     private SpriteRenderer sr;
     public Sprite moldy;
     private bool molded;
+    bool waiting;
     private int timer;
 
     private int rotFacing;
     int rotCount;
     int munchCount;
 
+    AudioSource aS;
 
 
 
@@ -44,9 +46,11 @@ public class Pizza : MonoBehaviour
     {
         
         sr = this.GetComponent<SpriteRenderer>();
+        aS = this.GetComponent<AudioSource>();
         StartState(AIState.Dropped);
         chosen = false;
         molded = false;
+        waiting = false;
         timer = 0;
     }
 
@@ -85,7 +89,7 @@ public class Pizza : MonoBehaviour
                 sign = 1;
 
 
-                if (rand == 0)
+                if (transform.position.x > 0)
                 {
                     sign = 1;
                 }
@@ -98,7 +102,7 @@ public class Pizza : MonoBehaviour
                 rotCount = 0;
                 sr.flipX = true;
                 transform.localScale = Vector3.one * 0.8f;
-                //Debug.Log("moldy!");
+                
 
 
                 rotCount = 0;
@@ -154,6 +158,7 @@ public class Pizza : MonoBehaviour
                 if (transform.rotation.eulerAngles.z > 30)
                 {
                     rotFacing = -1;
+
                 }
 
 
@@ -194,6 +199,7 @@ public class Pizza : MonoBehaviour
                 if (rotCount > 200) {
                     rotCount = 0;
                     rotFacing *= -1;
+                    aS.Play();
                 
                 }
 
@@ -229,19 +235,19 @@ public class Pizza : MonoBehaviour
         if(!chosen && collision.gameObject.CompareTag("rat") && currentState == AIState.Wait)
         {
             collision.gameObject.GetComponent<Rat>().FoundFood(this.gameObject);
+            waiting = true;
             
-            //Debug.Log("sniffed!");
+        
 
         }
 
-        //&& collision.gameObject.GetComponent<Rat>().currentState == Rat.AIState.Sniff 
-        //Debug.Log("triggered!");
+        
     }
 
 
     private void FixedUpdate()
     {
-        if(currentState == AIState.Wait)
+        if(currentState == AIState.Wait && !waiting)
         {
             timer++;
             if (timer > 360)
