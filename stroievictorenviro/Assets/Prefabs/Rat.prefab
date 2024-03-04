@@ -12,10 +12,9 @@ GameObject:
   - component: {fileID: -4798126955559706653}
   - component: {fileID: -368311870676957854}
   - component: {fileID: -7850062498220948054}
-  - component: {fileID: -1527232013569842163}
   m_Layer: 0
   m_Name: Rat
-  m_TagString: Untagged
+  m_TagString: rat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -49,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   facing: 1
   rotFacing: 1
-  xSpeed: 0.015
+  xSpeed: 3
   xBuffer: 18.5
   maxUpRot: {x: 0, y: 0, z: 20}
   maxDownRot: {x: 0, y: 0, z: 20}
@@ -135,36 +134,9 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 5
---- !u!50 &-1527232013569842163
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6135909585653555410}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Radius: 6

@@ -25,9 +25,10 @@ public class Rat : MonoBehaviour
     public Vector3 maxDownRot = new Vector3(0, 0, 20);
     private int rotCount;
     private int sniffCount;
+    int pizzaCount;
+    bool leave;
 
     private GameObject pizza;
-    private bool eating;
 
 
 
@@ -35,9 +36,12 @@ public class Rat : MonoBehaviour
     public AIState currentState;
     public enum AIState
     {
+        Test,
         Wander,
         Sniff,
-        Eat
+        Searching,
+        Eat,
+        Leave
     }
 
     // Start is called before the first frame update
@@ -45,7 +49,8 @@ public class Rat : MonoBehaviour
     {
         sprite = GetComponent<SpriteRenderer>();
         StartState(AIState.Wander);
-        eating = false;
+        leave = false;
+        pizzaCount = 0;
     }
 
     // Update is called once per frame
@@ -63,12 +68,30 @@ public class Rat : MonoBehaviour
         {
             case AIState.Wander:
 
-                if(eating)
+                
+
+                if(leave)
                 {
-                    randX = pizza.gameObject.transform.position.x;
-                    randY = pizza.gameObject.transform.position.y;
-                }
-                else
+                    int rand = Random.Range(0, 2);
+                    int sign = 1;
+
+
+                    if (rand == 0)
+                    {
+                        sign = 1;
+                    }
+                    else
+                    {
+                        sign = -1;
+                    }
+
+                    randX = 23 * sign;
+
+
+                    randY = Random.Range(ypos - 3, ypos + 3);
+                    if (randY < -9.5f) randY = -9.5f;
+                    if (randY > -3.8f) randY = -3.8f;
+                } else
                 {
                     randX = Random.Range(xpos - 10, xpos + 10);
                     if (randX < -17) randX = -17;
@@ -76,8 +99,10 @@ public class Rat : MonoBehaviour
                     randY = Random.Range(ypos - 3, ypos + 3);
                     if (randY < -9.5f) randY = -9.5f;
                     if (randY > -3.8f) randY = -3.8f;
-                    
                 }
+                    
+                    
+                
 
                 MovePosition = new Vector3(randX, randY, 0);
 
@@ -100,8 +125,30 @@ public class Rat : MonoBehaviour
                 sniffCount = 0;
                 currentState = AIState.Sniff;
                 break;
-            case AIState.Eat:
+            case AIState.Searching:
 
+                randX = pizza.transform.position.x;
+                randY = pizza.transform.position.y;
+
+                MovePosition = new Vector3(randX, randY, 0);
+
+                dir = (MovePosition - transform.position).normalized;
+
+                if (dir.x > 0)
+                {
+                    facing = 1;
+                }
+                else
+                {
+                    facing = -1;
+                }
+
+                currentState = AIState.Searching;
+                break;
+            case AIState.Eat:
+                rotCount = 0;
+                sniffCount = 0;
+                pizza.GetComponent<Pizza>().StartState(Pizza.AIState.Eaten);
                 currentState = AIState.Eat;
                 break;
         }
@@ -111,27 +158,43 @@ public class Rat : MonoBehaviour
     {
         switch (currentState)
         {
+            case AIState.Test:
+                if(Input.GetKey(KeyCode.D))
+                {
+                    transform.position += new Vector3(xSpeed, 0, 0) * Time.deltaTime;
+                }
+                if (Input.GetKey(KeyCode.A))
+                {
+                    transform.position += new Vector3(-xSpeed, 0, 0) * Time.deltaTime;
+                }
+                break;
+
+
+
+
             case AIState.Wander:
-                //transform.position += new Vector3(xSpeed * facing, 0, 0);
+              
 
                 xpos = transform.position.x;
                 ypos = transform.position.y;
-                //Debug.Log(xpos + ", " + ypos + "Rand: " + randX + ", " + randY);
+               
 
-                if ((xpos < randX + 0.5 && xpos > randX - 0.5) && (ypos < randY + 0.3 && ypos > randY - 0.3))
+                if ((xpos < randX + 2 && xpos > randX - 2) && (ypos < randY + 1.5 && ypos > randY - 1.5))
                 {
                     
-                    if(eating)
+                    if(leave)
                     {
-                        StartState(AIState.Eat);
+                        Manager.reference.GetComponent<Manager>().ratNum--;
+                        Destroy(this.gameObject);
                     } else
                     {
                         StartState(AIState.Sniff);
                     }
+                        
                     
                 } else 
                 {
-                    transform.position += dir * xSpeed;
+                    transform.position += dir * xSpeed * Time.deltaTime;
                 }
                
 
@@ -173,27 +236,14 @@ public class Rat : MonoBehaviour
                 {
                     rotFacing = 1;
                     rotCount = 0;
-                    //Debug.Log("turned");
+                    
                     sniffCount++;
                 }
-                
-
-                
-
-                //rotate clockwise
-                
-                
+              
                 if(transform.rotation.eulerAngles.z > 30)
                 {
                     rotFacing = -1;
-                    //Debug.Log(transform.rotation.eulerAngles.z);
                 }
-                /*
-                else if(transform.rotation.eulerAngles.z > 350 && transform.rotation.eulerAngles.z < 360) { 
-                    rotFacing = 1;
-                    Debug.Log(transform.rotation.eulerAngles.z);
-                }
-                */
 
 
 
@@ -204,11 +254,78 @@ public class Rat : MonoBehaviour
                 }
                 
                 break;
+
+            case AIState.Searching:
+                xpos = transform.position.x;
+                ypos = transform.position.y;
+                //Debug.Log(xpos + ", " + ypos + "Rand: " + randX + ", " + randY);
+
+                if ((xpos < randX + 0.5 && xpos > randX - 0.5) && (ypos < randY + 0.3 && ypos > randY - 0.3))
+                {
+                        StartState(AIState.Eat);
+                        
+
+                }
+                else
+                {
+                    transform.position += (dir * xSpeed) * Time.deltaTime;
+                }
+                break;
             case AIState.Eat:
-                
+                if (rotFacing == 1)
+                {
+                    transform.Rotate(Vector3.forward, 0.5f);
+
+                }
+                else
+                {
+
+                    transform.Rotate(Vector3.back, 0.5f);
+                    rotCount++;
+                }
+
+
+                if (rotCount > 40)
+                {
+                    rotFacing = 1;
+                    rotCount = 0;
+                    //Debug.Log("turned");
+                    sniffCount++;
+                }
+
+
+
+
+                //rotate clockwise
+
+
+                if (transform.rotation.eulerAngles.z > 30)
+                {
+                    rotFacing = -1;
+                    //Debug.Log(transform.rotation.eulerAngles.z);
+                }
+
+                if (sniffCount > 3)
+                {
+                    pizzaCount++;
+                    if (pizzaCount >= 3) leave = true;
+                    StartState(AIState.Wander);
+                }
+
                 break;
         }
     }
+
+
+    /*
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject == pizza && currentState == AIState.Eat)
+        {
+            collision.gameObject.GetComponent<Pizza>().StartState(Pizza.AIState.Eaten);
+        }
+    }
+    */
 
     private void EndState(AIState oldState)
     {
@@ -255,15 +372,21 @@ public class Rat : MonoBehaviour
         //if (!targetPizza.gameObject.GetComponent<Pizza>().chosen)
 
                 pizza = targetPizza;
-                eating = true;
+                StartState(AIState.Searching);
                 pizza.GetComponent<Pizza>().chosen = true;
+                //Debug.Log("found!");
+
 
         //}
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    
+    
+
+
+    public AIState GetState()
     {
-        
+        return currentState;
     }
 
 }

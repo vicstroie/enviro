@@ -35,7 +35,10 @@ public class Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(ratNum < 4)
+
+        
+        
+        if(ratNum < 2)
         {
             if (ratTimer > 240)
             {
@@ -46,7 +49,7 @@ public class Manager : MonoBehaviour
 
         }
 
-        if (pizzaNum < 5)
+        if (pizzaNum < 3)
         {
             if(pizzaTimer > 720)
             {
@@ -56,7 +59,7 @@ public class Manager : MonoBehaviour
             pizzaTimer++;
         }
 
-        if (pigeonNum < 3)
+        if (pigeonNum < 2)
         {
             if (pigeonTimer > 240)
             {
@@ -66,6 +69,7 @@ public class Manager : MonoBehaviour
             pigeonTimer++;
 
         }
+        
     }
 
     //Is the return type necessary?

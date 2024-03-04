@@ -10,7 +10,7 @@ public class Pizza : MonoBehaviour
 {
     //variables
     private float randomY;
-    private int sign;
+    private int sign = 1;
     private bool dropped;
     public bool chosen;
     public float speed;
@@ -20,6 +20,10 @@ public class Pizza : MonoBehaviour
     public Sprite moldy;
     private bool molded;
     private int timer;
+
+    private int rotFacing;
+    int rotCount;
+    int munchCount;
 
 
 
@@ -68,17 +72,38 @@ public class Pizza : MonoBehaviour
 
                 break;
             case AIState.Eaten:
+
+                rotCount = 0;
+                munchCount = 0;
+                rotFacing = 1;
                 currentState = AIState.Eaten;
 
                 break;
             case AIState.Mold:
                 randomY = Random.Range(-9.5f, -4);
                 int rand = Random.Range(0, 2);
-                if (rand == 0) { sign = 1; } else if (rand == 1) {  sign = -1; }
+                sign = 1;
+
+
+                if (rand == 0)
+                {
+                    sign = 1;
+                }
+                else
+                {
+                    sign = -1;
+                }
                 sr.sprite = moldy;
+                rotFacing = 1;
+                rotCount = 0;
                 sr.flipX = true;
                 transform.localScale = Vector3.one * 0.8f;
-                Debug.Log("moldy!");
+                //Debug.Log("moldy!");
+
+
+                rotCount = 0;
+
+
                 currentState = AIState.Mold;
                 
                 break;
@@ -104,15 +129,81 @@ public class Pizza : MonoBehaviour
                 break;
             case AIState.Eaten:
 
+
+                if (rotFacing == 1)
+                {
+                    transform.Rotate(Vector3.forward, 0.5f);
+
+                }
+                else
+                {
+
+                    transform.Rotate(Vector3.back, 0.5f);
+                    rotCount++;
+                }
+
+
+                if (rotCount > 40)
+                {
+                    rotFacing = 1;
+                    rotCount = 0;
+
+                    munchCount++;
+                }
+
+                if (transform.rotation.eulerAngles.z > 30)
+                {
+                    rotFacing = -1;
+                }
+
+
+
+
+                if (munchCount > 3)
+                {
+
+                    Destroy(this.gameObject);
+                    Manager.reference.GetComponent<Manager>().pizzaNum--;
+                    Destroy(this);
+                }
+
+
+
+
+
                 break;
             case AIState.Mold:
-                transform.position += new Vector3(randomY, speed * sign, 0) * Time.deltaTime;
-                if(transform.position.x > 20 || transform.position.x < -20)
+                 transform.position += new Vector3(speed * Time.deltaTime * sign, 0, 0);
+
+                
+
+
+
+                if (rotFacing == 1)
+                {
+                    transform.Rotate(Vector3.forward, 0.1f);
+                    rotCount++;
+                }
+                else
+                {
+
+                    transform.Rotate(Vector3.back, 0.1f);
+                    rotCount++;
+                }
+
+                if (rotCount > 200) {
+                    rotCount = 0;
+                    rotFacing *= -1;
+                
+                }
+
+                if (transform.position.x > 20 || transform.position.x < -20)
                 {
                     Manager.reference.GetComponent<Manager>().pizzaNum--;
                     Destroy(this.gameObject);
                     
                 }
+
                 break;
         }
     }
@@ -135,14 +226,16 @@ public class Pizza : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "rat" && collision.gameObject.GetComponent<Rat>().currentState == Rat.AIState.Sniff )
+        if(!chosen && collision.gameObject.CompareTag("rat") && currentState == AIState.Wait)
         {
             collision.gameObject.GetComponent<Rat>().FoundFood(this.gameObject);
-            chosen = true;
-            Debug.Log("sniffed!");
+            
+            //Debug.Log("sniffed!");
 
         }
-        Debug.Log("triggered!");
+
+        //&& collision.gameObject.GetComponent<Rat>().currentState == Rat.AIState.Sniff 
+        //Debug.Log("triggered!");
     }
 
 
@@ -151,9 +244,10 @@ public class Pizza : MonoBehaviour
         if(currentState == AIState.Wait)
         {
             timer++;
-            if (timer > 240)
+            if (timer > 360)
             {
                 molded = true;
+                timer = 0;
             }
         }
         

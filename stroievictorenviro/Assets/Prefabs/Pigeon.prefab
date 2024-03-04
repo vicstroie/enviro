@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3827275029512565443}
   - component: {fileID: 3616522186446972081}
   - component: {fileID: 2619120514174728240}
+  - component: {fileID: 9028369259601536470}
   m_Layer: 0
   m_Name: Pigeon
   m_TagString: Untagged
@@ -120,3 +121,20 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 4
+--- !u!114 &9028369259601536470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7750300979143882855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1f5d1c408ae091418afb1bf5a6403d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xBuffer: 18.5
+  xSpeed: 4
+  sitting: {fileID: 21300000, guid: c8ccfd2e49b5fb04d9b6394d4b0409f1, type: 3}
+  flying: {fileID: 21300000, guid: c3b5834748721ed409c7b13174705147, type: 3}
+  eat: {fileID: 21300000, guid: 75d18416ac8c5be43b4644abf9169ffe, type: 3}
